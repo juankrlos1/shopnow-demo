@@ -1,0 +1,14 @@
+server:
+  port: 8761
+
+spring:
+  application:
+    name: eureka-server
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+  server:
+    renewal-threshold-update-interval-ms: 60000
+    renewal-percent-threshold: 0.85

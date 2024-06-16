@@ -1,0 +1,52 @@
+server:
+  port: 8080
+
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/v1/users/**
+        - id: product-service
+          uri: lb://PRODUCT-SERVICE
+          predicates:
+            - Path=/api/v1/products/**
+        - id: order-service
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/api/v1/orders/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+
+    loadbalancer:
+      cache:
+        caffeine:
+          spec: maximumSize=500,expireAfterAccess=600s
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: false
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+
+jwt:
+  secret: your_jwt_secret_key
+  expiration: 86400000
