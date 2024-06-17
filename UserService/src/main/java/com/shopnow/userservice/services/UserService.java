@@ -6,14 +6,15 @@ import com.shopnow.userservice.dto.request.UserRequestDTO;
 import com.shopnow.userservice.dto.response.UserResponseDTO;
 import com.shopnow.userservice.models.User;
 import com.shopnow.userservice.repositories.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.shopnow.userservice.service.JwtService;
 
 @Service
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -39,6 +40,7 @@ public class UserService {
     }
 
     public String loginUser(LoginDTO loginDTO) {
+        log.info("Before get user in Login");
         User user = userRepository.findByUsername(loginDTO.getUsername())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
         if (passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {

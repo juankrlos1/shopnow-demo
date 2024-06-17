@@ -10,11 +10,13 @@
         <module name="apigateway" />
         <module name="EurekaServer" />
         <module name="userservice" />
+        <module name="AuthService" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="AuthService" options="-parameters" />
       <module name="EurekaServer" options="-parameters" />
       <module name="apigateway" options="-parameters" />
       <module name="userservice" options="-parameters" />

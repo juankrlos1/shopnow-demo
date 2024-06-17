@@ -1,14 +1,12 @@
 server:
-  port: 0
+  port: 8081
 
 spring:
   application:
     name: user-service
   data:
     mongodb:
-      host: localhost
-      port: 27017
-      database: shopnow_db
+      uri: mongodb://localhost:27017/shopnow_db
 
 jwt:
   secret: 5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437
@@ -23,4 +21,3 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
-
