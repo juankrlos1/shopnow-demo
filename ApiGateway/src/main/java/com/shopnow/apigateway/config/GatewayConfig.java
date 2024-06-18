@@ -19,19 +19,19 @@ public class GatewayConfig {
                 .routes()
                 .route("user-service", route -> route
                         .path("/api/v1/users/**")
-                        .filters(filter -> filter.filter(authFilter)
-                                .stripPrefix(1))
+                        .filters(filter -> filter.filter(authFilter))
                         .uri("lb://user-service"))
                 .route("product-service", route -> route
                         .path("/api/v1/products/**")
-                        .filters(filter -> filter.filter(authFilter)
-                                .stripPrefix(1))
+                        .filters(filter -> filter.filter(authFilter))
                         .uri("lb://product-service"))
                 .route("order-service", route -> route
                         .path("/api/v1/orders/**")
-                        .filters(filter -> filter.filter(authFilter)
-                                .stripPrefix(1))
+                        .filters(filter -> filter.filter(authFilter))
                         .uri("lb://order-service"))
+                .route("auth-service", route -> route
+                        .path("/api/v1/auth/**")
+                        .uri("lb://auth-service"))
                 .build();
     }
 }

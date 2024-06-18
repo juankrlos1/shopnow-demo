@@ -37,6 +37,7 @@ public class UserController {
 
     @GetMapping("/profile")
     public UserResponseDTO getProfile(@RequestParam String username) {
+        log.info("Get profile for user {}", username);
         return userService.getProfile(username);
     }
 }

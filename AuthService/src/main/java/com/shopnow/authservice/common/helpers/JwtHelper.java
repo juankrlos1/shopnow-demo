@@ -36,8 +36,13 @@ public class JwtHelper {
     }
 
     public boolean validateToken(String token) {
-        final var expirationDate = getExpirationDate(token);
-        return expirationDate.before(new Date());
+        try {
+            final var expirationDate = getExpirationDate(token);
+            return expirationDate.after(new Date());
+        } catch (Exception e) {
+            log.error("Invalid token", e);
+            return false;
+        }
     }
 
     private Date getExpirationDate(String token) {
@@ -45,6 +50,7 @@ public class JwtHelper {
     }
 
     private <T> T getClaimsFromToken(String token, Function<Claims, T> resolver) {
+        log.info("Before validate token");
         return resolver.apply(this.singToken(token));
     }
 

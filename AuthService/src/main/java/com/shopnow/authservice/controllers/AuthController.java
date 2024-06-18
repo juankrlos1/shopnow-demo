@@ -5,11 +5,12 @@ import com.shopnow.authservice.dto.UserDTO;
 import com.shopnow.authservice.services.AuthService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "auth")
+@RequestMapping(path = "api/v1/auth")
 @AllArgsConstructor
 @Slf4j
 public class AuthController {
@@ -22,12 +23,11 @@ public class AuthController {
     }
 
     @PostMapping(path = "validate")
-    public ResponseEntity<TokenDTO> validate(@RequestHeader String accessToken){
+    public ResponseEntity<TokenDTO> validate(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader){
+        log.info("Validating access token: {}", authorizationHeader);
+        String token = authorizationHeader.replace("Bearer ", "");
         return ResponseEntity.ok(this.authService.validateToken(
-                TokenDTO
-                        .builder()
-                        .accessToken(accessToken)
-                        .build()
+                TokenDTO.builder().accessToken(token).build()
         ));
     }
 }

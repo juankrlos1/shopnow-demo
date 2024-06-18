@@ -41,7 +41,8 @@ public class AuthServiceImpl implements AuthService{
 
     @Override
     public TokenDTO validateToken(TokenDTO token) {
-        if(!this.jwtHelper.validateToken(token.getAccessToken())){
+        log.info("Validating token: {}", token);
+        if(this.jwtHelper.validateToken(token.getAccessToken())){
             return TokenDTO
                     .builder()
                     .accessToken(token.getAccessToken())

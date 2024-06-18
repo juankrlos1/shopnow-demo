@@ -6,28 +6,18 @@ import com.shopnow.userservice.dto.request.UserRequestDTO;
 import com.shopnow.userservice.dto.response.UserResponseDTO;
 import com.shopnow.userservice.models.User;
 import com.shopnow.userservice.repositories.UserRepository;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 @Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
-    private final AuthenticationManager authenticationManager;
-
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtService = jwtService;
-        this.authenticationManager = authenticationManager;
-    }
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public String registerUser(UserRequestDTO userRequestDTO) {
         User user = new User();
@@ -44,12 +34,7 @@ public class UserService {
         User user = userRepository.findByUsername(loginDTO.getUsername())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
         if (passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
-            Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
-            if (authenticate.isAuthenticated()) {
-                return jwtService.generateToken(loginDTO.getUsername());
-            } else {
-                throw new RuntimeException("invalid access");
-            }
+            return user.getEmail();
         } else {
             throw new UserNotFoundException("Invalid credentials");
         }

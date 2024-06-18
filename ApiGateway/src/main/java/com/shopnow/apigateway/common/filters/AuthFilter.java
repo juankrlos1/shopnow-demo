@@ -17,7 +17,7 @@ public class AuthFilter implements GatewayFilter {
 
     private final WebClient webClient;
 
-    private static final String AUTH_VALIDATE_URI = "http://localhost:8081/api/v1/users/validate";
+    private static final String AUTH_VALIDATE_URI = "http://localhost:3030/api/v1/auth/validate";
     private static final String ACCESS_TOKEN_HEADER_NAME = "Authorization";
 
     public AuthFilter() {
@@ -28,7 +28,7 @@ public class AuthFilter implements GatewayFilter {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
         log.info("path: {}", path);
-        if (path.equals("/api/v1/users/login") || path.equals("/api/v1/users/register")) {
+        if (path.equals("/api/v1/auth/login") || path.equals("/api/v1/auth/register")) {
             return chain.filter(exchange);
         }
 
